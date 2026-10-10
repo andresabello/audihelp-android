@@ -1,0 +1,81 @@
+[versions]
+agp                   = "8.5.2"
+kotlin                = "2.0.21"
+room                  = "2.6.1"
+compose-bom           = "2024.10.00"
+hilt                  = "2.52"
+retrofit              = "2.11.0"
+okhttp                = "4.12.0"
+moshi                 = "1.15.1"
+navigation-compose    = "2.8.3"
+datastore             = "1.1.1"
+lifecycle             = "2.8.6"
+coroutines            = "1.9.0"
+browser               = "1.8.0"
+vico                  = "2.0.0-beta.3"
+oboe                  = "1.9.3"
+core-ktx              = "1.13.1"
+
+[libraries]
+# Core
+core-ktx                  = { group = "androidx.core",              name = "core-ktx",                  version.ref = "core-ktx" }
+
+# Compose BOM
+compose-bom               = { group = "androidx.compose",           name = "compose-bom",               version.ref = "compose-bom" }
+compose-ui                = { group = "androidx.compose.ui",        name = "ui" }
+compose-ui-tooling        = { group = "androidx.compose.ui",        name = "ui-tooling" }
+compose-ui-tooling-preview= { group = "androidx.compose.ui",        name = "ui-tooling-preview" }
+compose-material3         = { group = "androidx.compose.material3", name = "material3" }
+compose-material-icons    = { group = "androidx.compose.material", name = "material-icons-extended" }
+compose-activity          = { group = "androidx.activity",          name = "activity-compose",          version = "1.9.2" }
+
+# Navigation
+navigation-compose        = { group = "androidx.navigation",        name = "navigation-compose",        version.ref = "navigation-compose" }
+
+# Hilt
+hilt-android              = { group = "com.google.dagger",          name = "hilt-android",              version.ref = "hilt" }
+hilt-compiler             = { group = "com.google.dagger",          name = "hilt-android-compiler",     version.ref = "hilt" }
+hilt-navigation-compose   = { group = "androidx.hilt",              name = "hilt-navigation-compose",   version = "1.2.0" }
+
+# Network
+retrofit                  = { group = "com.squareup.retrofit2",     name = "retrofit",                  version.ref = "retrofit" }
+retrofit-moshi            = { group = "com.squareup.retrofit2",     name = "converter-moshi",           version.ref = "retrofit" }
+okhttp-logging            = { group = "com.squareup.okhttp3",       name = "logging-interceptor",       version.ref = "okhttp" }
+moshi-kotlin              = { group = "com.squareup.moshi",         name = "moshi-kotlin",              version.ref = "moshi" }
+moshi-kotlin-codegen      = { group = "com.squareup.moshi",        name = "moshi-kotlin-codegen",      version.ref = "moshi" }
+
+# DataStore
+datastore-preferences     = { group = "androidx.datastore",        name = "datastore-preferences",     version.ref = "datastore" }
+
+# Lifecycle / ViewModel
+lifecycle-viewmodel-ktx   = { group = "androidx.lifecycle",        name = "lifecycle-viewmodel-ktx",   version.ref = "lifecycle" }
+lifecycle-runtime-compose = { group = "androidx.lifecycle",        name = "lifecycle-runtime-compose",  version.ref = "lifecycle" }
+
+# Coroutines
+coroutines-android        = { group = "org.jetbrains.kotlinx",     name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+
+# OAuth — Chrome Custom Tabs
+browser                   = { group = "androidx.browser",          name = "browser",                    version.ref = "browser" }
+
+# Audiogram chart
+vico-compose              = { group = "com.patrykandpatrick.vico", name = "compose-m3",                version.ref = "vico" }
+
+# Oboe (AAudio wrapper — via Prefab)
+oboe                      = { group = "com.google.oboe",           name = "oboe",                       version.ref = "oboe" }
+
+# Room
+room-runtime              = { group = "androidx.room",              name = "room-runtime",               version.ref = "room" }
+room-ktx                  = { group = "androidx.room",              name = "room-ktx",                   version.ref = "room" }
+room-compiler             = { group = "androidx.room",              name = "room-compiler",              version.ref = "room" }
+
+# Testing
+junit                     = { group = "junit",                      name = "junit",                      version = "4.13.2" }
+androidx-test-ext         = { group = "androidx.test.ext",          name = "junit",                      version = "1.2.1" }
+espresso                  = { group = "androidx.test.espresso",     name = "espresso-core",              version = "3.6.1" }
+
+[plugins]
+android-application       = { id = "com.android.application",               version.ref = "agp"    }
+kotlin-android            = { id = "org.jetbrains.kotlin.android",           version.ref = "kotlin" }
+kotlin-compose            = { id = "org.jetbrains.kotlin.plugin.compose",    version.ref = "kotlin" }
+hilt                      = { id = "com.google.dagger.hilt.android",         version.ref = "hilt"   }
+ksp                       = { id = "com.google.devtools.ksp",                version = "2.0.21-1.0.27" }
