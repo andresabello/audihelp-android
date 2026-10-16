@@ -3,9 +3,11 @@ package com.audihelp.app.ui.live
 import android.content.Context
 import android.media.AudioDeviceInfo
 import android.media.AudioManager
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.audihelp.app.audio.AudioEngineController
+import com.audihelp.app.audio.AudioForegroundService
 import com.audihelp.app.audio.UsbAudioDeviceState
 import com.audihelp.app.audio.UsbDeviceManager
 import com.audihelp.app.data.repository.DspPresetRepository
@@ -60,6 +62,11 @@ class LiveViewModel @Inject constructor(
     private var meterJob: Job? = null
 
     init {
+        // Restore running state if audio is already active (e.g. user navigated away and back)
+        if (engine.isRunning) {
+            _uiState.update { it.copy(isLiveRunning = true) }
+            startMeterPolling()
+        }
         viewModelScope.launch {
             usbManager.deviceState.collect { state ->
                 _uiState.update { it.copy(usbMic = state) }
@@ -123,6 +130,9 @@ class LiveViewModel @Inject constructor(
                 return@launch
             }
 
+            // Promote to foreground service so the OS keeps us alive when screen is off
+            ContextCompat.startForegroundService(context, AudioForegroundService.startIntent(context))
+
             liveRepo.startSession(presetId = _uiState.value.selectedPresetId, profileId = null)
                 .onSuccess { session ->
                     _uiState.update { it.copy(activeSession = session, isLiveRunning = true, isLoading = false) }
@@ -140,6 +150,8 @@ class LiveViewModel @Inject constructor(
         meterJob?.cancel()
         meterJob = null
         engine.stopLiveMode()
+        // Release the foreground service — removes the notification
+        context.startService(AudioForegroundService.stopIntent(context))
         val session = _uiState.value.activeSession
         viewModelScope.launch {
             if (session != null) {
@@ -193,7 +205,9 @@ class LiveViewModel @Inject constructor(
 
     override fun onCleared() {
         super.onCleared()
+        // Only cancel metering — do NOT stop the engine. The foreground service keeps
+        // audio running when the user navigates away. Engine is stopped explicitly via
+        // stopLiveSession() or when the service is destroyed.
         meterJob?.cancel()
-        engine.stopLiveMode()
     }
 }

@@ -5,6 +5,10 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.USB_PERMISSION"
         tools:ignore="SystemPermissionTypo" xmlns:tools="http://schemas.android.com/tools" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <!-- Required to show the persistent notification on Android 13+ -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <!-- Required for USB audio device enumeration -->
     <uses-feature android:name="android.hardware.usb.host" android:required="false" />
@@ -18,6 +22,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Audihelp"
         android:networkSecurityConfig="@xml/network_security_config">
+
+        <service
+            android:name=".audio.AudioForegroundService"
+            android:exported="false"
+            android:foregroundServiceType="microphone" />
 
         <activity
             android:name=".MainActivity"
