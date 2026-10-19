@@ -18,11 +18,20 @@ class AudioEngineController @Inject constructor() {
         if (handle != 0L) { nativeDestroy(handle); handle = 0L }
     }
 
-    /** Opens Oboe input (mic) + output (headphones/BT) and starts processing. */
-    fun startLiveMode(sampleRate: Int = 48000, framesPerBurst: Int = 192): Boolean =
-        nativeStartLiveMode(handle, sampleRate, framesPerBurst)
+    var isRunning: Boolean = false
+        private set
 
-    fun stopLiveMode() = nativeStopLiveMode(handle)
+    /** Opens Oboe input (mic) + output (headphones/BT) and starts processing. */
+    fun startLiveMode(sampleRate: Int = 48000, framesPerBurst: Int = 192): Boolean {
+        val ok = nativeStartLiveMode(handle, sampleRate, framesPerBurst)
+        if (ok) isRunning = true
+        return ok
+    }
+
+    fun stopLiveMode() {
+        nativeStopLiveMode(handle)
+        isRunning = false
+    }
 
     fun startTone(frequencyHz: Float, levelDbfs: Float, patternType: Int) =
         nativeStartTone(handle, frequencyHz, levelDbfs, patternType)

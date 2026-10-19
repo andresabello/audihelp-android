@@ -2,6 +2,7 @@ package com.audihelp.app.ui.live
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -65,6 +66,21 @@ fun LiveScreen(viewModel: LiveViewModel = hiltViewModel()) {
     ) { granted ->
         if (granted) viewModel.startLiveSession()
         else viewModel.dismissError()
+    }
+
+    // On Android 13+ we need POST_NOTIFICATIONS so the foreground service notification shows
+    val notifPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { /* granted or not, proceed — notification is non-critical */ }
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        val hasNotifPermission = ContextCompat.checkSelfPermission(
+            context, Manifest.permission.POST_NOTIFICATIONS
+        ) == PackageManager.PERMISSION_GRANTED
+        if (!hasNotifPermission) {
+            androidx.compose.runtime.LaunchedEffect(Unit) {
+                notifPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
     }
 
     DisposableEffect(Unit) {
